@@ -6,7 +6,10 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * @see io.github.ausf_software.smbp_editor.input.MouseWheelStroke
+ * @see javax.swing.KeyStroke
  * @since 1.0
+ * @version 1.0
  * @author Daniil Scherbina
  */
 @Target(ElementType.METHOD)

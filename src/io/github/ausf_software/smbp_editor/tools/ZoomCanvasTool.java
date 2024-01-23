@@ -2,12 +2,12 @@ package io.github.ausf_software.smbp_editor.tools;
 
 import io.github.ausf_software.smbp_editor.window.panels.Editor;
 
-@EditorTool(name = "ZoomCanvasTool")
+@EditorTool(name = "Zoom canvas tool")
 public class ZoomCanvasTool extends AbstractEditorTool {
 
     private Editor editor;
 
-    @EditorToolAction(name = "zoomPlus", hotKey = "mouseWheelUp",
+    @EditorToolAction(name = "zoom plus", hotKey = "mouseWheelUp",
             listenerType = EditorToolAction.ListenerType.MOUSE_WHEEL)
     public void zoomPlus() {
         if (Editor.INSTANCE.getScale() + 5 <= 150)
@@ -15,7 +15,7 @@ public class ZoomCanvasTool extends AbstractEditorTool {
         System.out.println("scale" + Editor.INSTANCE.getScale());
     }
 
-    @EditorToolAction(name = "zoomMinus", hotKey = "mouseWheelDown",
+    @EditorToolAction(name = "zoom minus", hotKey = "mouseWheelDown",
             listenerType = EditorToolAction.ListenerType.MOUSE_WHEEL)
     public void zoomMinus() {
         if (Editor.INSTANCE.getScale() - 5 >= 1)

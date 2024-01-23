@@ -4,7 +4,7 @@ import io.github.ausf_software.smbp_editor.window.panels.Editor;
 
 import java.awt.*;
 
-@EditorTool(name = "MoveCanvas")
+@EditorTool(name = "Move canvas")
 public class MoveCanvasTool extends AbstractEditorTool {
 
     private Point last = null;

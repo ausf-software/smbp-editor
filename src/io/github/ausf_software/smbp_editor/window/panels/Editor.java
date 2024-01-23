@@ -20,8 +20,8 @@ public class Editor extends JComponent {
 
     // --- События которые нельзя поместить в InputMap -----------------
 
-    private final int MOUSE_WHEEL_DOWN = 1;
-    private final int MOUSE_WHEEL_UP = -1;
+    private final int MOUSE_WHEEL_DOWN_VALUE = 1;
+    private final int MOUSE_WHEEL_UP_VALUE = -1;
     private String mouseWheelDownAction = null;
     private String mouseWheelUpAction = null;
 
@@ -223,7 +223,10 @@ public class Editor extends JComponent {
     }
 
     /**
-     * Возвращает точку с текущим смещением позиции холста
+     * Возвращает новую точку с текущим смещением позиции холста.
+     * <p>При использовании в блоке кода несколько раз этой точки
+     * рекомендуется записать ссылку на возвращаемую точку
+     * в отдельную переменную, а не вызывать многократно метод.
      * @return точку с текущим смещением позиции холста.
      */
     public Point getCurrentCanvasPosition() {
@@ -297,7 +300,7 @@ public class Editor extends JComponent {
         @Override
         public void mouseWheelMoved(MouseWheelEvent e) {
             int r = e.getWheelRotation();
-            String name = r == MOUSE_WHEEL_UP ? mouseWheelUpAction : mouseWheelDownAction;
+            String name = r == MOUSE_WHEEL_UP_VALUE ? mouseWheelUpAction : mouseWheelDownAction;
 
             if (name != null) {
                 Action action = getActionMap().get(name);

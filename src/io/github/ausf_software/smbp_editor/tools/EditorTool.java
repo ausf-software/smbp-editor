@@ -14,6 +14,7 @@ import java.lang.annotation.Target;
  * Это позволяет динамически добавлять новые инструменты редактора
  * без необходимости изменения основного кода приложения.
  * @since 1.0
+ * @version 1.0
  * @author Daniil Scherbina
  */
 @Target(ElementType.TYPE)

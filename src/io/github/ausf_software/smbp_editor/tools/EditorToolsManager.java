@@ -78,7 +78,7 @@ public class EditorToolsManager {
     }
 
     private String calcActionKeyName(EditorTool tool, EditorToolAction actionAnnotation) {
-        return tool.name() + actionAnnotation.name();
+        return tool.name() + ": " + actionAnnotation.name();
     }
 
     private AbstractAction toAction(AbstractEditorTool tool, Method method) {
