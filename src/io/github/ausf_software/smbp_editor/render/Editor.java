@@ -51,7 +51,10 @@ public class Editor extends JComponent {
     private final byte canvasDepth = 2; // отступ создания объема рабочего полотна
     private final byte sizeLiner = 20; // толщина линейки по краю редактора
     private final byte linerSplitter = 50; // кол-во пикселей между метками линейки редактора
-    private final short maxViewOverCanvas = 250; // кол-во пикселей пространства за холстом
+    /**
+     * Кол-во пикселей пространства за холстом
+     */
+    public final short MAX_VIEW_OVER_CANVAS = 250;
 
     // --- Цвета темы --------------------------------------------------
 
