@@ -1,4 +1,4 @@
-package io.github.ausf_software.smbp_editor.tools;
+package io.github.ausf_software.smbp_editor.core;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

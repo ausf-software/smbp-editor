@@ -1,4 +1,4 @@
-package io.github.ausf_software.smbp_editor.window.panels;
+package io.github.ausf_software.smbp_editor.render;
 
 import javax.swing.*;
 import java.awt.*;

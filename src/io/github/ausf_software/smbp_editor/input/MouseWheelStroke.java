@@ -86,10 +86,24 @@ public class MouseWheelStroke {
         }
         if ((key.contains("mouseWheelDown") || key.contains("MOUSE_WHEEL_DOWN"))
                 && !(key.contains("mouseWheelUp") || key.contains("MOUSE_WHEEL_UP"))) {
-            temp += MOUSE_WHEEL_UP;
+            temp += MOUSE_WHEEL_DOWN;
             return new MouseWheelStroke(temp);
         }
         return null;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        MouseWheelStroke that = (MouseWheelStroke) o;
+
+        return mask == that.mask;
+    }
+
+    @Override
+    public int hashCode() {
+        return mask;
+    }
 }

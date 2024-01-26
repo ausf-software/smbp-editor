@@ -1,10 +1,17 @@
-package io.github.ausf_software.smbp_editor.window.panels;
+package io.github.ausf_software.smbp_editor.render;
+
+import io.github.ausf_software.smbp_editor.core.RenderOverCanvasViewport;
+import io.github.ausf_software.smbp_editor.core.RenderOverCanvasViewportManager;
+import io.github.ausf_software.smbp_editor.input.MouseWheelStroke;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.EventObject;
+import java.util.HashMap;
 import java.util.Map;
+
+import static io.github.ausf_software.smbp_editor.input.MouseWheelStroke.*;
 
 public class Editor extends JComponent {
 
@@ -22,8 +29,8 @@ public class Editor extends JComponent {
 
     private final int MOUSE_WHEEL_DOWN_VALUE = 1;
     private final int MOUSE_WHEEL_UP_VALUE = -1;
-    private String mouseWheelDownAction = null;
-    private String mouseWheelUpAction = null;
+    private HashMap<MouseWheelStroke, String> mouseWheelMap = null;
+    private HashMap<MouseWheelStroke, String> renderOverCanvasViewportMap = null;
 
     // --- Текущее смещение холста относительно нуля -------------------
 
@@ -74,12 +81,8 @@ public class Editor extends JComponent {
         }
     }
 
-    public void registerMouseWheelUpActionId(String action) {
-        mouseWheelUpAction = action;
-    }
-
-    public void registerMouseWheelDownActionId(String action) {
-        mouseWheelDownAction = action;
+    public void registerMouseWheelMap(HashMap<MouseWheelStroke, String> mouseWheelMap) {
+        this.mouseWheelMap = mouseWheelMap;
     }
 
     // --- Отрисовка ---------------------------------------------------
@@ -170,15 +173,30 @@ public class Editor extends JComponent {
         g.fillRect(0, 0, sizeLiner, sizeLiner);
     }
 
+    private void drawToolContentOnCanvas(Graphics g) {
+
+    }
+
+    private void drawToolContentOverCanvasViewport(Graphics g) {
+        for (RenderOverCanvasViewport r : RenderOverCanvasViewportManager.INSTANCE.getRenderList())
+            r.draw(g);
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+        int x = currCanvasX + sizeLiner;
+        int y = currCanvasY + sizeLiner;
         g.setColor(Color.GRAY);
         g.fillRect(0, 0, getWidth(), getHeight());
-        g.translate(currCanvasX + sizeLiner, currCanvasY + sizeLiner);
+        g.translate(x, y);
         drawCanvas(g);
-        g.translate(-currCanvasX - sizeLiner, -currCanvasY - sizeLiner);
+
+        drawToolContentOnCanvas(g);
+
+        g.translate(-x, -y);
         drawLiner(g);
+        drawToolContentOverCanvasViewport(g);
     }
 
     // -----------------------------------------------------------------
@@ -195,7 +213,7 @@ public class Editor extends JComponent {
     }
 
     /**
-     * Перемещает холст на указанное значение смещения
+     * Перемещает холст на указанное значение смещения. После смещения выполнится перерисовка
      * @param x величина смещения по оси X
      * @param y величина смещения по оси Y
      */
@@ -206,7 +224,7 @@ public class Editor extends JComponent {
     }
 
     /**
-     * Увеличивает масштаб холста на указанное значение
+     * Увеличивает масштаб холста на указанное значение. После увеличения выполнится перерисовка
      * @param value величина приближения в процентах
      */
     public void addZoom(int value) {
@@ -300,10 +318,11 @@ public class Editor extends JComponent {
         @Override
         public void mouseWheelMoved(MouseWheelEvent e) {
             int r = e.getWheelRotation();
-            String name = r == MOUSE_WHEEL_UP_VALUE ? mouseWheelUpAction : mouseWheelDownAction;
-
-            if (name != null) {
-                Action action = getActionMap().get(name);
+            int wheelType = r == MOUSE_WHEEL_UP_VALUE ? MOUSE_WHEEL_UP : MOUSE_WHEEL_DOWN;
+            MouseWheelStroke stroke = getMouseWheelStroke(e.isShiftDown(), e.isAltDown(),
+                    e.isControlDown(), wheelType);
+            if (mouseWheelMap != null) {
+                Action action = getActionMap().get(mouseWheelMap.get(stroke));
                 if (action != null)
                     action.actionPerformed(null);
             }

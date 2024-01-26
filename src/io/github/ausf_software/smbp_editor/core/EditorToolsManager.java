@@ -1,6 +1,6 @@
-package io.github.ausf_software.smbp_editor.tools;
+package io.github.ausf_software.smbp_editor.core;
 
-import io.github.ausf_software.smbp_editor.window.panels.Editor;
+import io.github.ausf_software.smbp_editor.input.MouseWheelStroke;
 import org.reflections.Reflections;
 
 import javax.swing.*;
@@ -15,6 +15,7 @@ public class EditorToolsManager {
 
     private HashMap<KeyStroke, Object> inputMap = new HashMap<>();
     private HashMap<Object, AbstractAction> actionMap = new HashMap<>();
+    private HashMap<MouseWheelStroke, String> mouseWheelMap = new HashMap<>();
 
     public List<AbstractEditorTool> toolObjects = new ArrayList<>();
 
@@ -47,20 +48,23 @@ public class EditorToolsManager {
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }
+            registerNewRenderOverCanvas(tool);
         }
+    }
+
+    private void registerNewRenderOverCanvas(Class<?> tool) {
+        Class<?>[] r = tool.getDeclaredClasses();
+        for (Class<?> c : r)
+            if (c.isAnnotationPresent(ToolRenderOverCanvasViewport.class)
+                && isRenderOverCanvasClass(c))
+                RenderOverCanvasViewportManager.INSTANCE.put(c);
     }
 
     private void addNewInput(EditorToolAction actionAnnotation, String key) {
         if (actionAnnotation.listenerType() == EditorToolAction.ListenerType.KEY)
             inputMap.put(KeyStroke.getKeyStroke(actionAnnotation.hotKey()), key);
-        if (actionAnnotation.listenerType() == EditorToolAction.ListenerType.MOUSE_WHEEL) {
-            if (actionAnnotation.hotKey().equals("mouseWheelUp")) {
-                Editor.INSTANCE.registerMouseWheelUpActionId(key);
-            }
-            if (actionAnnotation.hotKey().equals("mouseWheelDown")) {
-                Editor.INSTANCE.registerMouseWheelDownActionId(key);
-            }
-        }
+        if (actionAnnotation.listenerType() == EditorToolAction.ListenerType.MOUSE_WHEEL)
+            mouseWheelMap.put(MouseWheelStroke.getMouseWheelStroke(actionAnnotation.hotKey()), key);
     }
 
     private Set<Method> getEditorToolActions(Class<?> tool) {
@@ -75,6 +79,10 @@ public class EditorToolsManager {
 
     private boolean isEditorToolClass(Class<?> tool) {
         return tool.getSuperclass().equals(AbstractEditorTool.class);
+    }
+
+    private boolean isRenderOverCanvasClass(Class<?> tool) {
+        return tool.getSuperclass().equals(RenderOverCanvasViewport.class);
     }
 
     private String calcActionKeyName(EditorTool tool, EditorToolAction actionAnnotation) {
@@ -106,4 +114,7 @@ public class EditorToolsManager {
         return actionMap;
     }
 
+    public HashMap<MouseWheelStroke, String> getMouseWheelMap() {
+        return mouseWheelMap;
+    }
 }

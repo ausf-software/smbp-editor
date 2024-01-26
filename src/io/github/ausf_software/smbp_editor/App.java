@@ -1,7 +1,7 @@
 package io.github.ausf_software.smbp_editor;
 
-import io.github.ausf_software.smbp_editor.tools.EditorToolsManager;
-import io.github.ausf_software.smbp_editor.window.MainWindow;
+import io.github.ausf_software.smbp_editor.core.EditorToolsManager;
+import io.github.ausf_software.smbp_editor.render.MainWindow;
 
 public class App {
 

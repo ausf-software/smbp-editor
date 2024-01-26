@@ -1,9 +1,6 @@
-package io.github.ausf_software.smbp_editor.window;
+package io.github.ausf_software.smbp_editor.render;
 
-import io.github.ausf_software.smbp_editor.tools.EditorToolsManager;
-import io.github.ausf_software.smbp_editor.window.panels.Editor;
-import io.github.ausf_software.smbp_editor.window.panels.ModePanel;
-import io.github.ausf_software.smbp_editor.window.panels.ToolsPanel;
+import io.github.ausf_software.smbp_editor.core.EditorToolsManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,6 +15,7 @@ public class MainWindow extends JFrame {
 
         Editor.INSTANCE.registerInputMap(EditorToolsManager.INSTANCE.getInputMap());
         Editor.INSTANCE.registerActionMap(EditorToolsManager.INSTANCE.getActionMap());
+        Editor.INSTANCE.registerMouseWheelMap(EditorToolsManager.INSTANCE.getMouseWheelMap());
 
         add(Editor.INSTANCE, BorderLayout.CENTER);
         setVisible(true);
