@@ -26,10 +26,10 @@ public class EditorToolsManager {
         Set<Class<?>> tools = reflections.getTypesAnnotatedWith(EditorTool.class);
 
         for (Class<?> tool : tools) {
-            if (!isEditorToolClass(tool))
-                continue;
-            else
+            if (!isEditorToolClass(tool)) {
                 System.out.println("Класс: " + tool.getName() + " не унаследован от AbstractEditorTool");
+                continue;
+            }
 
             Set<Method> actions = getEditorToolActions(tool);
             if (actions.isEmpty()) {
