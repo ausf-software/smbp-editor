@@ -28,10 +28,14 @@ public class EditorToolsManager {
         for (Class<?> tool : tools) {
             if (!isEditorToolClass(tool))
                 continue;
+            else
+                System.out.println("Класс: " + tool.getName() + " не унаследован от AbstractEditorTool");
 
             Set<Method> actions = getEditorToolActions(tool);
-            if (actions.isEmpty())
+            if (actions.isEmpty()) {
+                System.out.println("Класс: " + tool.getName() + " не содержит методов событий");
                 continue;
+            }
 
             try {
                 AbstractEditorTool toolObject = (AbstractEditorTool) tool.newInstance();

@@ -25,8 +25,7 @@ public class ZoomCanvasTool extends AbstractEditorTool {
             Editor.INSTANCE.addZoom(-5);
     }
 
-    @ToolRenderOverCanvasViewport(name = "Current zoom hint", timeRender = 1000, timeAnimation =
-            100)
+    @ToolRenderOverCanvasViewport(name = "Current zoom hint", timeRender = 1000)
     public static class ZoomCanvasHint extends RenderOverCanvasViewport {
 
         public ZoomCanvasHint() {
@@ -39,14 +38,6 @@ public class ZoomCanvasTool extends AbstractEditorTool {
                     Editor.INSTANCE.getSize().height / 2,
                     50,50);
         }
-
-        @Override
-        public void animationAppearance(double delta) {
-            System.out.println(delta);
-        }
-
-        @Override
-        public void animationDisappearing(double delta) { }
     }
 
 }

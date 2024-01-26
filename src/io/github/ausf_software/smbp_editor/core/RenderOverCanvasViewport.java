@@ -4,11 +4,9 @@ import java.awt.*;
 
 /**
  * Абстрактный класс служащий для задания методов которые должны
- * содержаться у каждого класса помеченным аннотацией ToolRenderOverCanvasViewport.
+ * содержаться у каждого класса помеченным аннотацией <code>ToolRenderOverCanvasViewport</code>.
  */
 public abstract class RenderOverCanvasViewport {
-
-    private long startAnimationTime;
 
     /**
      * Рисует необходимое содержимое поверх всей панели редактора
@@ -16,33 +14,4 @@ public abstract class RenderOverCanvasViewport {
      */
     public abstract void draw(Graphics g);
 
-    /**
-     * Метод который должен содержать описание изменений в
-     * для анимации появления.
-     * @param delta разница прошедшего времени
-     */
-    public abstract void animationAppearance(double delta);
-
-    /**
-     * Метод который должен содержать описание изменений в
-     * для анимации исчезания.
-     * @param delta разница прошедшего времени
-     */
-    public abstract void animationDisappearing(double delta);
-
-    /**
-     * Возвращает время начала анимации
-     * @return время начала анимации (в миллисекундах)
-     */
-    public long getStartAnimationTime() {
-        return startAnimationTime;
-    }
-
-    /**
-     * Устанавливает время начала анимации
-     * @param startAnimationTime время начала анимации (в миллисекундах)
-     */
-    public void setStartAnimationTime(long startAnimationTime) {
-        this.startAnimationTime = startAnimationTime;
-    }
 }
