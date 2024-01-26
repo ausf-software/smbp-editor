@@ -49,7 +49,10 @@ public class Editor extends JComponent {
     // --- Параметры отображения и перемещения холста ------------------
 
     private final byte canvasDepth = 2; // отступ создания объема рабочего полотна
-    private final byte sizeLiner = 20; // толщина линейки по краю редактора
+    /**
+     * Толщина линейки по краю редактора
+     */
+    public final byte SIZE_LINER = 20;
     private final byte linerSplitter = 50; // кол-во пикселей между метками линейки редактора
     /**
      * Кол-во пикселей пространства за холстом
@@ -128,30 +131,30 @@ public class Editor extends JComponent {
     }
 
     private int getEndWidthLiner() {
-        int endW = getWidth() - sizeLiner;
+        int endW = getWidth() - SIZE_LINER;
         endW -= endW - sizeCanvasWidth;
         return endW;
     }
 
     private int getEndHeightLiner() {
-        int endH = getHeight() - sizeLiner;
+        int endH = getHeight() - SIZE_LINER;
         endH -= endH - sizeCanvasWidth;
         return endH;
     }
 
     private void drawLiner(Graphics g) {
         g.setColor(linerColor);
-        g.fillRect(0, 0, getWidth(), sizeLiner);
-        g.fillRect(0, 0, sizeLiner, getHeight());
+        g.fillRect(0, 0, getWidth(), SIZE_LINER);
+        g.fillRect(0, 0, SIZE_LINER, getHeight());
 
-        int startW = sizeLiner + currCanvasX;
-        int startH = sizeLiner + currCanvasY;
+        int startW = SIZE_LINER + currCanvasX;
+        int startH = SIZE_LINER + currCanvasY;
         int endW = getEndWidthLiner();
         int endH = getEndHeightLiner();
 
-        int drs = (int) (sizeLiner / 1.5);
+        int drs = (int) (SIZE_LINER / 1.5);
         int sps = linerSplitter / 5;
-        int lnс = sizeLiner - 1; // длина линии = sizeLiner => последняя координата sizeLiner - 1
+        int lnс = SIZE_LINER - 1; // длина линии = sizeLiner => последняя координата sizeLiner - 1
 
         g.setColor(Color.WHITE);
         for (int i = 0; i < endW / linerSplitter + 1; i++) {
@@ -173,7 +176,7 @@ public class Editor extends JComponent {
         }
 
         g.setColor(linerColor);
-        g.fillRect(0, 0, sizeLiner, sizeLiner);
+        g.fillRect(0, 0, SIZE_LINER, SIZE_LINER);
     }
 
     private void drawToolContentOnCanvas(Graphics g) {
@@ -188,8 +191,8 @@ public class Editor extends JComponent {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        int x = currCanvasX + sizeLiner;
-        int y = currCanvasY + sizeLiner;
+        int x = currCanvasX + SIZE_LINER;
+        int y = currCanvasY + SIZE_LINER;
         g.setColor(Color.GRAY);
         g.fillRect(0, 0, getWidth(), getHeight());
         g.translate(x, y);
