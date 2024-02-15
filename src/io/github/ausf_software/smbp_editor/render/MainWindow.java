@@ -10,7 +10,7 @@ public class MainWindow extends JFrame {
     public MainWindow() {
         setTitle("SMBP Editor");
         setSize(700, 700);
-        add(new ToolsPanel(), BorderLayout.WEST);
+        add(ToolsPanel.INSTANCE, BorderLayout.WEST);
         add(new ModePanel(), BorderLayout.NORTH);
 
         Editor.INSTANCE.registerInputMap(EditorToolsManager.INSTANCE.getInputMap());
