@@ -219,6 +219,22 @@ public class Editor extends JComponent {
     }
 
     /**
+     * Возвращает ширину холста
+     * @return ширину холста
+     */
+    public int getCanvasWidth() {
+        return sizeCanvasWidth;
+    }
+
+    /**
+     * Возвращает высоту холста
+     * @return высоту холста
+     */
+    public int getCanvasHeight() {
+        return sizeCanvasHeight;
+    }
+
+    /**
      * Перемещает холст на указанное значение смещения. После смещения выполнится перерисовка
      * @param x величина смещения по оси X
      * @param y величина смещения по оси Y
