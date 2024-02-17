@@ -1,10 +1,12 @@
 package io.github.ausf_software.smbp_editor.core;
 
 import io.github.ausf_software.smbp_editor.input.MouseWheelStroke;
+import io.github.ausf_software.smbp_editor.render.ToolsPanel;
 import org.reflections.Reflections;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
@@ -41,6 +43,8 @@ public class EditorToolsManager {
                 AbstractEditorTool toolObject = (AbstractEditorTool) tool.newInstance();
                 toolObjects.add(toolObject);
                 EditorTool toolAnnotation = tool.getAnnotation(EditorTool.class);
+                if (!toolAnnotation.icon().equals(""))
+                    ToolsPanel.INSTANCE.addTool(toolAnnotation.icon(), toolAnnotation.name());
                 for (Method m : actions) {
                     EditorToolAction mDescription = m.getAnnotation(EditorToolAction.class);
                     String key = calcActionKeyName(toolAnnotation, mDescription);
@@ -50,6 +54,8 @@ public class EditorToolsManager {
             } catch (InstantiationException e) {
                 e.printStackTrace();
             } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
                 e.printStackTrace();
             }
             registerNewRenderOverCanvas(tool);
