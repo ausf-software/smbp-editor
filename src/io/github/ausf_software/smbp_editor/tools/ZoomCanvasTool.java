@@ -40,17 +40,15 @@ public class ZoomCanvasTool extends AbstractEditorTool {
         public void draw(Graphics g) {
             g.setColor(Color.BLACK);
             int lineWidth = 200;
-            int lineStroke = 2;
-            int lineX = Editor.INSTANCE.getSize().width / 2 - lineWidth / 2;
-            int lineY = Editor.INSTANCE.getSize().height / 2;
+            int lineX = Editor.INSTANCE.SIZE_LINER + 30;
+            int lineY = Editor.INSTANCE.SIZE_LINER + 20;
             g.drawLine(lineX, lineY, lineX + lineWidth, lineY);
 
             ZoomCanvasTool zoomCanvasTool = new ZoomCanvasTool();
             int rectX = lineX + (int)((float)(Editor.INSTANCE.getScale()) / zoomCanvasTool.MaxZoom * lineWidth);
-            int rectY = Editor.INSTANCE.getSize().height / 2 - 7;
+            int rectY = lineY - 7;
             g.fillRect(rectX, rectY, 6,14);
-            g.drawString(Editor.INSTANCE.getScale() + "%", Editor.INSTANCE.getSize().width / 2,
-                    Editor.INSTANCE.getSize().height / 2 + 20);
+            g.drawString(Editor.INSTANCE.getScale() + "%", lineX, lineY + 20);
         }
     }
 
