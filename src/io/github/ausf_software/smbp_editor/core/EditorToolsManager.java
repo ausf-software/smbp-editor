@@ -1,5 +1,7 @@
 package io.github.ausf_software.smbp_editor.core;
 
+import io.github.ausf_software.smbp_editor.core.storage.Storage;
+import io.github.ausf_software.smbp_editor.core.storage.StorageListener;
 import io.github.ausf_software.smbp_editor.input.MouseWheelStroke;
 import io.github.ausf_software.smbp_editor.render.ToolsPanel;
 import org.reflections.Reflections;
@@ -51,6 +53,7 @@ public class EditorToolsManager {
                     addNewInput(mDescription, key);
                     actionMap.put(key, toAction(toolObject, m));
                 }
+                registerStorageListeners(toolObject, tool.getDeclaredMethods());
             } catch (InstantiationException e) {
                 e.printStackTrace();
             } catch (IllegalAccessException e) {
@@ -68,6 +71,17 @@ public class EditorToolsManager {
             if (c.isAnnotationPresent(ToolRenderOverCanvasViewport.class)
                 && isRenderOverCanvasClass(c))
                 RenderOverCanvasViewportManager.INSTANCE.put(c);
+    }
+
+    private void registerStorageListeners(AbstractEditorTool tool, Method[] methods) {
+        for (Method m : methods) {
+            if (m.isAnnotationPresent(StorageListener.class)) {
+                MethodPair methodPair = new MethodPair(tool, m);
+                for (String str : m.getAnnotation(StorageListener.class).names()) {
+                    Storage.INSTANCE.registerMethod(str, methodPair);
+                }
+            }
+        }
     }
 
     private void addNewInput(EditorToolAction actionAnnotation, String key) {
