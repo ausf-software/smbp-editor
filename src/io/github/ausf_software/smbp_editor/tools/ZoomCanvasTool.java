@@ -40,6 +40,7 @@ public class ZoomCanvasTool extends AbstractEditorTool {
         public void draw(Graphics g) {
             g.setColor(Color.BLACK);
             int lineWidth = 200;
+            int lineStroke = 2;
             int lineX = Editor.INSTANCE.SIZE_LINER + 30;
             int lineY = Editor.INSTANCE.SIZE_LINER + 20;
             g.drawLine(lineX, lineY, lineX + lineWidth, lineY);
