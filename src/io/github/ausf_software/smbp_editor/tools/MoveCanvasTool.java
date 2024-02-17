@@ -9,6 +9,7 @@ import java.awt.*;
 public class MoveCanvasTool extends AbstractEditorTool {
 
     private Point last = null;
+    private Editor editor= Editor.INSTANCE;
 
     @EditorToolAction(name = "start", hotKey = "SPACE")
     public void pressed() {
@@ -17,20 +18,14 @@ public class MoveCanvasTool extends AbstractEditorTool {
         if (!cur.equals(last)) {
             if (last != null) {
                 // Ограничение смещения холста
-                if (cur.getX() >- Editor.INSTANCE.MAX_VIEW_OVER_CANVAS &&
-                        cur.getX() < Editor.INSTANCE.MAX_VIEW_OVER_CANVAS+Editor.INSTANCE.getWidth() &&
-                        cur.getY() >- Editor.INSTANCE.MAX_VIEW_OVER_CANVAS &&
-                        cur.getY() < Editor.INSTANCE.MAX_VIEW_OVER_CANVAS+Editor.INSTANCE.getHeight()) {
-                    Editor.INSTANCE.moveCanvasCords(cur.x - last.x, cur.y - last.y);
-                }
-                // Округление смещения до граничного допустимого значения, если смещение превышает и пространство за холстом
-                else {
-                    Point New_cur = MouseInfo.getPointerInfo().getLocation();
-                    New_cur.x = (int)Math.min(Math.max(cur.getX(), -Editor.INSTANCE.MAX_VIEW_OVER_CANVAS),
-                            Editor.INSTANCE.MAX_VIEW_OVER_CANVAS + Editor.INSTANCE.getWidth());
-                    New_cur.y = (int)Math.min(Math.max(cur.getY(), -Editor.INSTANCE.MAX_VIEW_OVER_CANVAS),
-                            Editor.INSTANCE.MAX_VIEW_OVER_CANVAS + Editor.INSTANCE.getHeight());
-                    Editor.INSTANCE.moveCanvasCords(New_cur.x - last.x, New_cur.y - last.y);
+                int dx = cur.x - last.x;
+                int dy = cur.y - last.y;
+                if (    editor.getCurrentCanvasX() + dx > -editor.MAX_VIEW_OVER_CANVAS - editor.getWidth() * (editor.getScale()/100) &&
+                        editor.getCurrentCanvasY() + dy > -editor.MAX_VIEW_OVER_CANVAS - editor.getHeight() * (editor.getScale()/100) &&
+                        editor.getCurrentCanvasX()  + dx < editor.MAX_VIEW_OVER_CANVAS &&
+                        editor.getCurrentCanvasY() +  dy < editor.MAX_VIEW_OVER_CANVAS)
+                {
+                    Editor.INSTANCE.moveCanvasCords(dx, dy);
                 }
             }
             last = cur;
