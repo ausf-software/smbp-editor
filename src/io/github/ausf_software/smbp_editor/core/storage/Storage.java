@@ -1,15 +1,14 @@
 package io.github.ausf_software.smbp_editor.core.storage;
 
-import io.github.ausf_software.smbp_editor.core.MethodPair;
+import io.github.ausf_software.smbp_editor.core.utils.MethodPair;
 
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 public class Storage {
-    public static final Storage INSTANCE = new Storage();
 
-    private Storage() {}
+    public Storage() {}
 
     private Map<String, Serializable> store = new HashMap<>();
     private Map<String, List<MethodPair>> methods = new HashMap<>();
@@ -46,6 +45,12 @@ public class Storage {
         if (!methods.containsKey(name))
             methods.put(name, new ArrayList<>());
         methods.get(name).add(met);
+    }
+
+    public void registerMethod(String[] names, MethodPair met) {
+        for (String name : names) {
+            registerMethod(name, met);
+        }
     }
 
 }
