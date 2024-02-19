@@ -1,5 +1,7 @@
-package io.github.ausf_software.smbp_editor.core;
+package io.github.ausf_software.smbp_editor.core.system;
 
+import io.github.ausf_software.smbp_editor.core.RenderOverCanvasViewport;
+import io.github.ausf_software.smbp_editor.core.ToolRenderOverCanvasViewport;
 import io.github.ausf_software.smbp_editor.render.Editor;
 
 import java.util.*;

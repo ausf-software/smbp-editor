@@ -1,6 +1,7 @@
 package io.github.ausf_software.smbp_editor.tools;
 
 import io.github.ausf_software.smbp_editor.core.*;
+import io.github.ausf_software.smbp_editor.core.system.RenderOverCanvasViewportManager;
 import io.github.ausf_software.smbp_editor.render.Editor;
 
 import java.awt.*;

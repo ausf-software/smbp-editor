@@ -1,7 +1,7 @@
 package io.github.ausf_software.smbp_editor.render;
 
 import io.github.ausf_software.smbp_editor.core.RenderOverCanvasViewport;
-import io.github.ausf_software.smbp_editor.core.RenderOverCanvasViewportManager;
+import io.github.ausf_software.smbp_editor.core.system.RenderOverCanvasViewportManager;
 import io.github.ausf_software.smbp_editor.input.MouseWheelStroke;
 
 import javax.swing.*;

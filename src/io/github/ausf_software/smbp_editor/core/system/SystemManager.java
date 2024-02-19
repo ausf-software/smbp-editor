@@ -1,23 +1,31 @@
 package io.github.ausf_software.smbp_editor.core.system;
 
-import io.github.ausf_software.smbp_editor.core.utils.MethodPair;
+import io.github.ausf_software.smbp_editor.core.AbstractEditorTool;
+import io.github.ausf_software.smbp_editor.core.RenderOverCanvasViewport;
 import io.github.ausf_software.smbp_editor.core.storage.Storage;
-import io.github.ausf_software.smbp_editor.core.utils.StorageListenersUtil;
+import io.github.ausf_software.smbp_editor.core.storage.StorageListener;
+import io.github.ausf_software.smbp_editor.core.utils.MethodPair;
+import io.github.ausf_software.smbp_editor.core.utils.ToolEntity;
 import io.github.ausf_software.smbp_editor.render.Editor;
+import io.github.ausf_software.smbp_editor.render.ToolsPanel;
 import org.reflections.Reflections;
 
+import java.io.IOException;
 import java.lang.reflect.Method;
-import java.util.Set;
 
 public class SystemManager {
 
     private static final String CLASSES_PATH = "io.github.ausf_software.smbp_editor";
     private final Reflections reflections = new Reflections(CLASSES_PATH);
     private final Storage storage = new Storage();
-    private final EditorToolsManager editorToolsManager = new EditorToolsManager();
+    private final EditorToolsManager editorToolsManager;
 
     public SystemManager() {
-        editorToolsManager.load(storage, reflections);
+        editorToolsManager = new EditorToolsManager(this);
+        editorToolsManager.loadToolEntities(reflections);
+        for (String name : editorToolsManager.getToolNames()) {
+            editorToolsManager.enableTool(name);
+        }
     }
 
     public void registerInputMapsToEditor(Editor editor) {
@@ -26,12 +34,23 @@ public class SystemManager {
         editor.registerMouseWheelMap(editorToolsManager.getActionInputMap().getMouseWheelMap());
     }
 
-    private void loadStorageListener() {
-        Set<Method> methods = StorageListenersUtil.getStorageListenerMethods(reflections);
-        for (Method m : methods) {
-            if (StorageListenersUtil.isAnnotationMethod(m))
-                storage.registerMethod(StorageListenersUtil.getValuesNames(m), new MethodPair(m,
-                        null));
+    public void addToolToPanel(ToolEntity entity) throws IOException {
+        ToolsPanel.INSTANCE.addTool(entity.getIcon(), entity.getToolName());
+    }
+
+
+    public void registerStorageListeners(AbstractEditorTool tool, ToolEntity entity) {
+        for (Method m : entity.getStorageListeners()) {
+            MethodPair methodPair = new MethodPair(tool, m);
+            for (String str : m.getAnnotation(StorageListener.class).names()) {
+                storage.registerMethod(str, methodPair);
+            }
         }
     }
+
+    public void registerRenderOverCanvas(ToolEntity tool) {
+        for (Class<RenderOverCanvasViewport> c : tool.getRenderOverCanvasViewport())
+            RenderOverCanvasViewportManager.INSTANCE.put(c);
+    }
+
 }

@@ -1,6 +1,8 @@
 package io.github.ausf_software.smbp_editor.tools;
 
-import io.github.ausf_software.smbp_editor.core.*;
+import io.github.ausf_software.smbp_editor.core.AbstractEditorTool;
+import io.github.ausf_software.smbp_editor.core.EditorTool;
+import io.github.ausf_software.smbp_editor.core.EditorToolAction;
 import io.github.ausf_software.smbp_editor.render.Editor;
 
 import java.awt.*;
