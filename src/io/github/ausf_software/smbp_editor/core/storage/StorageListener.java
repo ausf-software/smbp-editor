@@ -21,6 +21,7 @@ import java.lang.annotation.Target;
  *         System.out.println("one2: " + one2);
  *     }
  *     </pre>
+ * @see Storage
  * @since 1.0
  * @version 1.0
  * @author Daniil Scherbina

@@ -1,5 +1,7 @@
 package io.github.ausf_software.smbp_editor.core;
 
+import io.github.ausf_software.smbp_editor.input.ListenerType;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -44,18 +46,4 @@ public @interface EditorToolAction {
      * @return тип слушателя событий к которому будет прикреплен метод
      */
     ListenerType listenerType() default ListenerType.KEY;
-
-    /**
-     * Перечисление описывающее тип слушателя событий
-     */
-    enum ListenerType {
-        /**
-         * Слушатель обрабатывающий нажатия клавиш клавиатуры.
-         */
-        KEY,
-        /**
-         * Слушатель обрабатывающий прокрутку колесика мыши.
-         */
-        MOUSE_WHEEL;
-    }
 }

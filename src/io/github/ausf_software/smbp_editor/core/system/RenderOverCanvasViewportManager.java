@@ -21,9 +21,9 @@ public class RenderOverCanvasViewportManager {
      * Добавляет новый объект рендера в общую базу
      * @param toolRender класс рендера
      */
-    public void put(Class<?> toolRender) {
+    public void add(Class<RenderOverCanvasViewport> toolRender) {
         try {
-            RenderOverCanvasViewport obj = (RenderOverCanvasViewport) toolRender.newInstance();
+            RenderOverCanvasViewport obj = toolRender.newInstance();
             ToolRenderOverCanvasViewport an =
                     toolRender.getAnnotation(ToolRenderOverCanvasViewport.class);
             allObjects.put(an.name(), obj);
