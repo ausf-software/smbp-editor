@@ -1,10 +1,11 @@
 package io.github.ausf_software.smbp_editor.tools;
 
 import io.github.ausf_software.smbp_editor.core.*;
+import io.github.ausf_software.smbp_editor.core.system.RenderOverCanvasViewportManager;
+import io.github.ausf_software.smbp_editor.input.ListenerType;
 import io.github.ausf_software.smbp_editor.render.Editor;
 
 import java.awt.*;
-import java.net.SocketOption;
 
 @EditorTool(name = "Zoom canvas tool")
 public class ZoomCanvasTool extends AbstractEditorTool {
@@ -15,7 +16,7 @@ public class ZoomCanvasTool extends AbstractEditorTool {
     public final int ZoomStep = 5;
 
     @EditorToolAction(name = "zoom plus", hotKey = "mouseWheelUp",
-            listenerType = EditorToolAction.ListenerType.MOUSE_WHEEL)
+            listenerType = ListenerType.MOUSE_WHEEL)
     public void zoomPlus() {
         if (Editor.INSTANCE.getScale() + ZoomStep <= MaxZoom)
             Editor.INSTANCE.addZoom(ZoomStep);
@@ -23,7 +24,7 @@ public class ZoomCanvasTool extends AbstractEditorTool {
     }
 
     @EditorToolAction(name = "zoom minus", hotKey = "mouseWheelDown",
-            listenerType = EditorToolAction.ListenerType.MOUSE_WHEEL)
+            listenerType = ListenerType.MOUSE_WHEEL)
     public void zoomMinus() {
         if (Editor.INSTANCE.getScale() - ZoomStep >= MinZoom)
             Editor.INSTANCE.addZoom(-ZoomStep);

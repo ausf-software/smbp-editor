@@ -1,7 +1,8 @@
 package io.github.ausf_software.smbp_editor.render;
 
 import io.github.ausf_software.smbp_editor.core.RenderOverCanvasViewport;
-import io.github.ausf_software.smbp_editor.core.RenderOverCanvasViewportManager;
+import io.github.ausf_software.smbp_editor.core.system.RenderOverCanvasViewportManager;
+import io.github.ausf_software.smbp_editor.input.ActionInputMap;
 import io.github.ausf_software.smbp_editor.input.MouseWheelStroke;
 
 import javax.swing.*;
@@ -75,19 +76,25 @@ public class Editor extends JComponent {
 
     // --- Регистрация событий -----------------------------------------
 
-    public void registerInputMap(Map<KeyStroke, Object> inputMap) {
+    public void registerActionInputMap(ActionInputMap actionInputMap) {
+        registerActionMap(actionInputMap.getActionMap());
+        registerInputMap(actionInputMap.getKeyMap());
+        registerMouseWheelMap(actionInputMap.getMouseWheelMap());
+    }
+
+    private void registerInputMap(Map<KeyStroke, Object> inputMap) {
         for (Map.Entry<KeyStroke, Object> entry : inputMap.entrySet()) {
             getInputMap(JComponent.WHEN_FOCUSED).put(entry.getKey(), entry.getValue());
         }
     }
 
-    public void registerActionMap(Map<Object, AbstractAction> inputMap) {
+    private void registerActionMap(Map<Object, AbstractAction> inputMap) {
         for (Map.Entry<Object, AbstractAction> entry : inputMap.entrySet()) {
             getActionMap().put(entry.getKey(), entry.getValue());
         }
     }
 
-    public void registerMouseWheelMap(HashMap<MouseWheelStroke, String> mouseWheelMap) {
+    private void registerMouseWheelMap(HashMap<MouseWheelStroke, String> mouseWheelMap) {
         this.mouseWheelMap = mouseWheelMap;
     }
 

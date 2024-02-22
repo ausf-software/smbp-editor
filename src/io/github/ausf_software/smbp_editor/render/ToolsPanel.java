@@ -3,6 +3,7 @@ package io.github.ausf_software.smbp_editor.render;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,7 +20,7 @@ public class ToolsPanel extends JPanel {
 
     public void addTool(String icon, String name) throws IOException {
         JButton button = new JButton();
-        Image img = ImageIO.read(getClass().getResource("icon"));
+        Image img = ImageIO.read(new File(icon));
         button.setIcon(new ImageIcon(img));
         button.setBackground(Color.DARK_GRAY);
         toolButtons.put(name, button);
