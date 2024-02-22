@@ -111,6 +111,7 @@ class EditorToolsManager {
                             "панель инструментов будет проигнорировано.", entity.getToolName(),
                     entity.getIcon());
         }
+        log.info("Инструмент \"{}\" включен", name);
     }
 
     /**
@@ -136,6 +137,7 @@ class EditorToolsManager {
         // проверка для добавление на панель инструментов
         if (!entity.getIcon().equals(""))
             SYSTEM.removeToolToPanel(entity);
+        log.info("Инструмент \"{}\" выключен", name);
     }
 
     /**
