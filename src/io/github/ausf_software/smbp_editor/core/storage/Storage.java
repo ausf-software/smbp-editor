@@ -38,9 +38,11 @@ public class Storage {
      * @param value значение
      */
     public void upload(String name, Serializable value) {
-        store.put(name, value);
-        log.info("[Storage] Значение \"{}\" было изменено на \"{}\"", name, value);
-        triggered(name);
+        if (!value.equals(store.get(name))) {
+            store.put(name, value);
+            log.info("[Storage] Значение \"{}\" было изменено на \"{}\"", name, value);
+            triggered(name);
+        }
     }
 
     /**

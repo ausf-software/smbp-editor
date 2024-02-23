@@ -1,7 +1,7 @@
 package io.github.ausf_software.smbp_editor.core.system;
 
-import io.github.ausf_software.smbp_editor.core.AbstractEditorTool;
-import io.github.ausf_software.smbp_editor.core.EditorToolAction;
+import io.github.ausf_software.smbp_editor.core.tool.AbstractEditorTool;
+import io.github.ausf_software.smbp_editor.core.tool.EditorToolAction;
 import io.github.ausf_software.smbp_editor.core.utils.EditorToolUtil;
 import io.github.ausf_software.smbp_editor.core.utils.MethodPair;
 import io.github.ausf_software.smbp_editor.input.ActionInputMap;
@@ -88,6 +88,8 @@ class EditorToolsManager {
         try {
             // создание экземпляра инструмента
             AbstractEditorTool toolObject = (AbstractEditorTool) entity.getEditorToolClass().newInstance();
+            toolObject.setToolName(name);
+            toolObject.setEditor(SYSTEM.getEditor());
             TOOL_OBJECT.put(name, toolObject);
             // регистрация InputAction
             for (Method m : entity.getActions()) {

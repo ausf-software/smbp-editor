@@ -19,6 +19,11 @@ public class StorageListenersUtil {
             if (isAnnotationMethod(m))
                 res.add(m);
         }
+        methods = clazz.getSuperclass().getDeclaredMethods();
+        for (Method m : methods) {
+            if (isStorageListener(m))
+                res.add(m);
+        }
         return res;
     }
 

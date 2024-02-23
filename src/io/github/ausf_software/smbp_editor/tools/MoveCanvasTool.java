@@ -1,8 +1,8 @@
 package io.github.ausf_software.smbp_editor.tools;
 
-import io.github.ausf_software.smbp_editor.core.AbstractEditorTool;
-import io.github.ausf_software.smbp_editor.core.EditorTool;
-import io.github.ausf_software.smbp_editor.core.EditorToolAction;
+import io.github.ausf_software.smbp_editor.core.tool.AbstractEditorTool;
+import io.github.ausf_software.smbp_editor.core.tool.EditorTool;
+import io.github.ausf_software.smbp_editor.core.tool.EditorToolAction;
 import io.github.ausf_software.smbp_editor.render.Editor;
 
 import java.awt.*;
@@ -11,21 +11,20 @@ import java.awt.*;
 public class MoveCanvasTool extends AbstractEditorTool {
 
     private Point last = null;
-    private Editor editor= Editor.INSTANCE;
 
     @EditorToolAction(name = "start", hotKey = "SPACE")
     public void pressed() {
-        Editor.INSTANCE.setCursor(new Cursor(Cursor.MOVE_CURSOR));
+        EDITOR.setCursor(new Cursor(Cursor.MOVE_CURSOR));
         Point cur = MouseInfo.getPointerInfo().getLocation();
         if (!cur.equals(last)) {
             if (last != null) {
                 // Ограничение смещения холста
                 int dx = cur.x - last.x;
                 int dy = cur.y - last.y;
-                if (    editor.getCurrentCanvasX() + dx > -editor.MAX_VIEW_OVER_CANVAS - editor.getWidth() * (editor.getScale()/100) &&
-                        editor.getCurrentCanvasY() + dy > -editor.MAX_VIEW_OVER_CANVAS - editor.getHeight() * (editor.getScale()/100) &&
-                        editor.getCurrentCanvasX()  + dx < editor.MAX_VIEW_OVER_CANVAS &&
-                        editor.getCurrentCanvasY() +  dy < editor.MAX_VIEW_OVER_CANVAS)
+                if (    EDITOR.getCurrentCanvasX() + dx > -EDITOR.MAX_VIEW_OVER_CANVAS - EDITOR.getWidth() * (EDITOR.getScale()/100) &&
+                        EDITOR.getCurrentCanvasY() + dy > -EDITOR.MAX_VIEW_OVER_CANVAS - EDITOR.getHeight() * (EDITOR.getScale()/100) &&
+                        EDITOR.getCurrentCanvasX() + dx <  EDITOR.MAX_VIEW_OVER_CANVAS &&
+                        EDITOR.getCurrentCanvasY() + dy <  EDITOR.MAX_VIEW_OVER_CANVAS)
                 {
                     Editor.INSTANCE.moveCanvasCords(dx, dy);
                 }
@@ -37,7 +36,7 @@ public class MoveCanvasTool extends AbstractEditorTool {
     @EditorToolAction(name = "end", hotKey = "released SPACE")
     public void release() {
         last = null;
-        Editor.INSTANCE.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+        EDITOR.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }
 
 }
