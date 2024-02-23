@@ -1,6 +1,6 @@
 package io.github.ausf_software.smbp_editor.core.system;
 
-import io.github.ausf_software.smbp_editor.core.EditorTool;
+import io.github.ausf_software.smbp_editor.core.tool.EditorTool;
 import io.github.ausf_software.smbp_editor.core.utils.EditorToolUtil;
 import io.github.ausf_software.smbp_editor.core.utils.StorageListenersUtil;
 import org.slf4j.Logger;

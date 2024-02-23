@@ -1,5 +1,7 @@
 package io.github.ausf_software.smbp_editor.render;
 
+import io.github.ausf_software.smbp_editor.core.system.SystemManager;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -10,16 +12,19 @@ import java.util.Map;
 
 public class ToolsPanel extends JPanel {
 
-    public static ToolsPanel INSTANCE = new ToolsPanel();
+    public final SystemManager SYSTEM;
     private Map<String, JButton> toolButtons;
 
-    public ToolsPanel() {
+    public ToolsPanel(SystemManager systemManager) {
+        SYSTEM = systemManager;
         toolButtons = new HashMap<>();
         setBackground(new Color(30, 30, 30));
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
     }
 
     public void addTool(String icon, String name) throws IOException {
         JButton button = new JButton();
+        button.addActionListener(e -> SYSTEM.changeTool(name));
         Image img = ImageIO.read(new File(icon));
         button.setIcon(new ImageIcon(img));
         button.setBackground(Color.DARK_GRAY);

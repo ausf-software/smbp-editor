@@ -1,8 +1,8 @@
 package io.github.ausf_software.smbp_editor.core.utils;
 
-import io.github.ausf_software.smbp_editor.core.AbstractEditorTool;
-import io.github.ausf_software.smbp_editor.core.EditorTool;
-import io.github.ausf_software.smbp_editor.core.EditorToolAction;
+import io.github.ausf_software.smbp_editor.core.tool.AbstractEditorTool;
+import io.github.ausf_software.smbp_editor.core.tool.EditorTool;
+import io.github.ausf_software.smbp_editor.core.tool.EditorToolAction;
 import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

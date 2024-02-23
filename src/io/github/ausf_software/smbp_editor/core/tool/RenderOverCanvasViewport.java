@@ -1,4 +1,4 @@
-package io.github.ausf_software.smbp_editor.core;
+package io.github.ausf_software.smbp_editor.core.tool;
 
 import java.awt.*;
 

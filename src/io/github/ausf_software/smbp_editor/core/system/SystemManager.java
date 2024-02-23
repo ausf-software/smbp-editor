@@ -1,9 +1,9 @@
 package io.github.ausf_software.smbp_editor.core.system;
 
-import io.github.ausf_software.smbp_editor.core.AbstractEditorTool;
-import io.github.ausf_software.smbp_editor.core.RenderOverCanvasViewport;
 import io.github.ausf_software.smbp_editor.core.storage.Storage;
 import io.github.ausf_software.smbp_editor.core.storage.StorageListener;
+import io.github.ausf_software.smbp_editor.core.tool.AbstractEditorTool;
+import io.github.ausf_software.smbp_editor.core.tool.RenderOverCanvasViewport;
 import io.github.ausf_software.smbp_editor.core.utils.MethodPair;
 import io.github.ausf_software.smbp_editor.core.utils.RenderOverCanvasViewportUtil;
 import io.github.ausf_software.smbp_editor.render.Editor;
@@ -25,9 +25,13 @@ public class SystemManager {
     private final Storage storage = new Storage();
     private final EditorToolsManager editorToolsManager;
 
+    private final ToolsPanel toolsPanel = new ToolsPanel(this);
+    private final Editor editor = Editor.INSTANCE;
+
     private Set<Class<RenderOverCanvasViewport>> renderOver;
 
     public SystemManager() {
+        storage.upload("current_tool", "null");
         editorToolsManager = new EditorToolsManager(this);
         renderOver = RenderOverCanvasViewportUtil.getRenderOverCanvas(reflections);
         int count = editorToolsManager.getLoadingItemCount(reflections) + renderOver.size();
@@ -45,13 +49,16 @@ public class SystemManager {
     }
 
     void addToolToPanel(ToolEntity entity) throws IOException {
-        ToolsPanel.INSTANCE.addTool(entity.getIcon(), entity.getToolName());
+        toolsPanel.addTool(entity.getIcon(), entity.getToolName());
     }
 
     public void removeToolToPanel(ToolEntity entity) {
-        ToolsPanel.INSTANCE.removeTool(entity.getToolName());
+        toolsPanel.removeTool(entity.getToolName());
     }
 
+    public void changeTool(String name) {
+        storage.upload("current_tool", name);
+    }
 
     void registerStorageListeners(AbstractEditorTool tool, ToolEntity entity) {
         for (Method m : entity.getStorageListeners()) {
@@ -77,4 +84,11 @@ public class SystemManager {
         }
     }
 
+    public ToolsPanel getToolsPanel() {
+        return toolsPanel;
+    }
+
+    public Editor getEditor() {
+        return editor;
+    }
 }
