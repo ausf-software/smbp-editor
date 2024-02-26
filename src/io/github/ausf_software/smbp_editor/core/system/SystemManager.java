@@ -55,6 +55,10 @@ public class SystemManager {
         mainWindow.setVisible(true);
     }
 
+    public void loaded() {
+        loadingWindow.addProgress();
+    }
+
     public void registerInputMapsToEditor(Editor editor) {
         editor.registerActionInputMap(editorToolsManager.getActionInputMap());
     }
@@ -92,6 +96,7 @@ public class SystemManager {
     private void registerRenderOverCanvas(Set<Class<RenderOverCanvasViewport>> renderOver) {
         for (Class<RenderOverCanvasViewport> c : renderOver) {
             RenderOverCanvasViewportManager.INSTANCE.add(c);
+            loaded();
         }
     }
 

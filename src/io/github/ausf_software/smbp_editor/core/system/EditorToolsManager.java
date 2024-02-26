@@ -70,9 +70,6 @@ class EditorToolsManager {
     public int getLoadingItemCount(Reflections reflections) {
         tools = EditorToolUtil.getEditorTools(reflections);
         int size = tools.size();
-        for (Class<?> c : tools) {
-            size += c.getDeclaredMethods().length;
-        }
         return size;
     }
 
@@ -159,6 +156,7 @@ class EditorToolsManager {
                 TOOL_NAMES.add(entity.getToolName());
                 TOOL_ENABLE.put(entity.getToolName(), false);
             }
+            SYSTEM.loaded();
         }
     }
 
