@@ -7,6 +7,8 @@ import io.github.ausf_software.smbp_editor.core.tool.RenderOverCanvasViewport;
 import io.github.ausf_software.smbp_editor.core.utils.MethodPair;
 import io.github.ausf_software.smbp_editor.core.utils.RenderOverCanvasViewportUtil;
 import io.github.ausf_software.smbp_editor.render.Editor;
+import io.github.ausf_software.smbp_editor.render.LoadingWindow;
+import io.github.ausf_software.smbp_editor.render.MainWindow;
 import io.github.ausf_software.smbp_editor.render.ToolsPanel;
 import org.reflections.Reflections;
 import org.slf4j.Logger;
@@ -28,20 +30,29 @@ public class SystemManager {
     private final ToolsPanel toolsPanel = new ToolsPanel(this);
     private final Editor editor = Editor.INSTANCE;
 
-    private Set<Class<RenderOverCanvasViewport>> renderOver;
+    private final MainWindow mainWindow;
 
-    public SystemManager() {
+    private Set<Class<RenderOverCanvasViewport>> renderOver;
+    private LoadingWindow loadingWindow = new LoadingWindow();
+
+    public SystemManager(MainWindow mainWindow) {
+        this.mainWindow = mainWindow;
+
         storage.upload("current_tool", "null");
         editorToolsManager = new EditorToolsManager(this);
         renderOver = RenderOverCanvasViewportUtil.getRenderOverCanvas(reflections);
         int count = editorToolsManager.getLoadingItemCount(reflections) + renderOver.size();
         log.info("Обнаружено элементов для загрузки: {}", count);
+        loadingWindow.setCountLoadingItem(count);
         editorToolsManager.loadToolEntities();
         for (String name : editorToolsManager.getToolNames()) {
             editorToolsManager.enableTool(name);
         }
         // регистрируем рендер поверх холста
         registerRenderOverCanvas(renderOver);
+
+        loadingWindow.dispose();
+        mainWindow.setVisible(true);
     }
 
     public void registerInputMapsToEditor(Editor editor) {
