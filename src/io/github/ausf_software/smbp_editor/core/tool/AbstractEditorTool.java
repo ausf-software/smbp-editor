@@ -32,7 +32,7 @@ public abstract class AbstractEditorTool {
 
     /**
      * Устанавливает к какому редактору прикреплен инструмент
-     * @param EDITOR редактор к которому прикреплен инструмент
+     * @param editor редактор к которому прикреплен инструмент
      */
     public final void setEditor(Editor editor) {
         this.EDITOR = editor;

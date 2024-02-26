@@ -4,14 +4,16 @@ import javax.swing.*;
 import java.awt.*;
 
 public class LoadingWindow extends JFrame {
+    private String pathBack = "res/loading_background.png";
 
-    private JPanel panel = new JPanel() {
+    private JPanel panel = new JPanel(new BorderLayout()) {
         @Override
         protected void paintComponent(Graphics g) {
-            super.paintComponent(g);
-            g.drawImage(new ImageIcon("res/loading_background.png").getImage(), 0, 0, this);
+            g.drawImage(new ImageIcon(pathBack).getImage(), 0, 0, this);
         }
     };
+
+    private JProgressBar bar = new JProgressBar();
 
     public LoadingWindow() {
         setUndecorated(true);
@@ -19,7 +21,16 @@ public class LoadingWindow extends JFrame {
         setSize(650, 450);
         setLocationRelativeTo(null);
         add(panel);
+        panel.add(bar, BorderLayout.SOUTH);
         setVisible(true);
+    }
+
+    public void setCountLoadingItem(int a) {
+        bar.setMaximum(a);
+    }
+
+    public void addProgress() {
+        bar.setValue(bar.getValue() + 1);
     }
 
 }

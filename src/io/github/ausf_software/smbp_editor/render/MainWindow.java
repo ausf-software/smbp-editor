@@ -7,7 +7,10 @@ import java.awt.*;
 
 public class MainWindow extends JFrame {
 
-    public MainWindow(SystemManager systemManager) {
+    private final SystemManager systemManager;
+    public MainWindow() {
+        systemManager = new SystemManager(this);
+
         setTitle("SMBP Editor");
         setSize(700, 700);
         add(systemManager.getToolsPanel(), BorderLayout.WEST);
@@ -16,7 +19,6 @@ public class MainWindow extends JFrame {
         systemManager.registerInputMapsToEditor(Editor.INSTANCE);
 
         add(Editor.INSTANCE, BorderLayout.CENTER);
-        setVisible(true);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
 
