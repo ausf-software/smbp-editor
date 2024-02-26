@@ -68,6 +68,8 @@ public class Storage {
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }
+            log.error("[Storage] Зарегистрирован слушатель значения \"{}\": {}",
+                    name, m.getMethod().getName());
         }
     }
 

@@ -3,10 +3,14 @@ package io.github.ausf_software.smbp_editor.core.system;
 import io.github.ausf_software.smbp_editor.core.tool.RenderOverCanvasViewport;
 import io.github.ausf_software.smbp_editor.core.tool.ToolRenderOverCanvasViewport;
 import io.github.ausf_software.smbp_editor.render.Editor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
 public class RenderOverCanvasViewportManager {
+
+    private static final Logger log = LoggerFactory.getLogger(RenderOverCanvasViewportManager.class);
 
     public static RenderOverCanvasViewportManager INSTANCE = new RenderOverCanvasViewportManager();
 
@@ -27,6 +31,7 @@ public class RenderOverCanvasViewportManager {
             ToolRenderOverCanvasViewport an =
                     toolRender.getAnnotation(ToolRenderOverCanvasViewport.class);
             allObjects.put(an.name(), obj);
+            log.info("Зарегистрирован элемент отрисовки поверх панели редактора: {}", an.name());
         } catch (InstantiationException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
