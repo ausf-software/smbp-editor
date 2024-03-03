@@ -14,12 +14,12 @@ import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.Set;
 
 public class SystemManager {
 
+    public static final String CFG_PATH = "res/";
     private static final Logger log = LoggerFactory.getLogger(SystemManager.class);
 
     private static final String CLASSES_PATH = "io.github.ausf_software.smbp_editor.tools";
@@ -63,7 +63,7 @@ public class SystemManager {
         editor.registerActionInputMap(editorToolsManager.getActionInputMap());
     }
 
-    void addToolToPanel(ToolEntity entity) throws IOException {
+    void addToolToPanel(ToolEntity entity) {
         toolsPanel.addTool(entity.getIcon(), entity.getToolName());
     }
 

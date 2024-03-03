@@ -1,13 +1,17 @@
 package io.github.ausf_software.smbp_editor.core.system;
 
+import io.github.ausf_software.smbp_editor.core.tool.ConfigurableField;
 import io.github.ausf_software.smbp_editor.core.tool.EditorTool;
 import io.github.ausf_software.smbp_editor.core.utils.EditorToolUtil;
 import io.github.ausf_software.smbp_editor.core.utils.StorageListenersUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Класс предоставляющий удобное хранение всей информации об инструменте редактора.
@@ -27,8 +31,11 @@ class ToolEntity {
     private final EditorTool annotation;
     private final Set<Method> actions;
     private final Set<Method> storageListeners;
+    private final Set<Field> configField;
+    private final String cfgName;
 
     /**
+     /**
      * Создает экземпляр ToolEntity по заданным полям класса
      * @param toolName имя инструмента
      * @param icon путь к файлу иконки инструмента
@@ -36,15 +43,20 @@ class ToolEntity {
      * @param annotation объект аннотации инструмента
      * @param actions множество методов действий инструмента
      * @param storageListeners множество методов слушателей хранилища
+     * @param configField множество конфигурируемых полей класса
+     * @param cfgName имя конфигурационного файла инструмента
      */
     private ToolEntity(String toolName, String icon, Class<?> clazz, EditorTool annotation,
-                      Set<Method> actions, Set<Method> storageListeners) {
+                       Set<Method> actions, Set<Method> storageListeners,
+                       Set<Field> configField, String cfgName) {
         this.toolName = toolName;
         this.icon = icon;
         this.clazz = clazz;
         this.annotation = annotation;
         this.actions = actions;
         this.storageListeners = storageListeners;
+        this.configField = configField;
+        this.cfgName = cfgName;
     }
 
     /**
@@ -65,8 +77,14 @@ class ToolEntity {
 
         EditorTool toolAnnotation = tool.getAnnotation(EditorTool.class);
 
+        Set<Field> fieldSet = List.of(tool.getFields())
+                        .stream()
+                        .filter(a -> a.isAnnotationPresent(ConfigurableField.class))
+                        .collect(Collectors.toSet());
+
         return new ToolEntity(toolAnnotation.name(), toolAnnotation.icon(), tool, toolAnnotation,
-                actions, StorageListenersUtil.getStorageListenerMethods(tool));
+                actions, StorageListenersUtil.getStorageListenerMethods(tool), fieldSet,
+                toolAnnotation.cfg());
     }
 
     /**
@@ -115,5 +133,23 @@ class ToolEntity {
      */
     public Set<Method> getActions() {
         return actions;
+    }
+
+    /**
+     * Возвращает множество полей инструмента,
+     * значение которых находится в конфигурационном файле
+     * @return множество полей инструмента, значение которых
+     * находится в конфигурационном файле
+     */
+    public Set<Field> getConfigField() {
+        return configField;
+    }
+
+    /**
+     * Возвращает имя конфигурационного файла инструмента
+     * @return имя конфигурационного файла инструмента
+     */
+    public String getCfgName() {
+        return cfgName;
     }
 }

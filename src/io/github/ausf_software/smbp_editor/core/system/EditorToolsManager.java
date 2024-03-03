@@ -2,6 +2,7 @@ package io.github.ausf_software.smbp_editor.core.system;
 
 import io.github.ausf_software.smbp_editor.core.tool.AbstractEditorTool;
 import io.github.ausf_software.smbp_editor.core.tool.EditorToolAction;
+import io.github.ausf_software.smbp_editor.core.utils.ConfigureToolObjectUtil;
 import io.github.ausf_software.smbp_editor.core.utils.EditorToolUtil;
 import io.github.ausf_software.smbp_editor.core.utils.MethodPair;
 import io.github.ausf_software.smbp_editor.input.ActionInputMap;
@@ -9,7 +10,8 @@ import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
+import java.io.File;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.*;
 
@@ -87,6 +89,8 @@ class EditorToolsManager {
             AbstractEditorTool toolObject = (AbstractEditorTool) entity.getEditorToolClass().newInstance();
             toolObject.setToolName(name);
             toolObject.setEditor(SYSTEM.getEditor());
+            // конфигурация объекта инструмента
+            if (!configureToolObject(entity, toolObject)) return;
             TOOL_OBJECT.put(name, toolObject);
             // регистрация InputAction
             for (Method m : entity.getActions()) {
@@ -98,19 +102,34 @@ class EditorToolsManager {
             }
             // регистрируем слушатели хранилища
             SYSTEM.registerStorageListeners(toolObject, entity);
-            // проверка для добавление на панель инструментов
+            // проверка для добавления на панель инструментов
             if (!entity.getIcon().equals(""))
                 SYSTEM.addToolToPanel(entity);
         } catch (InstantiationException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
             e.printStackTrace();
-        } catch (IOException e) {
-            log.error("Для инструмента {} не была найдена иконка по адресу {}. Добавление на " +
-                            "панель инструментов будет проигнорировано.", entity.getToolName(),
-                    entity.getIcon());
         }
         log.info("Инструмент \"{}\" включен", name);
+    }
+
+    /**
+     * Конфигурирует объект инструмента исходя из настроек в файле
+     * @param entity данные об инструменте
+     * @param editorTool объект инструмента
+     * @return true если конфигурация прошла успешно, false если иначе
+     */
+    private boolean configureToolObject(ToolEntity entity, Object editorTool) {
+        if (entity.getAnnotation().cfg().equals("")) return true;
+        Set<Field> fields = entity.getConfigField();
+        Properties properties = new Properties();
+        File cfgFile = new File(SYSTEM.CFG_PATH + entity.getCfgName());
+        if (!cfgFile.isFile()) {
+            ConfigureToolObjectUtil.generateConfigFile(fields, cfgFile);
+            return false;
+        }
+        return ConfigureToolObjectUtil.configure(editorTool, fields, entity.getEditorToolClass(),
+                cfgFile);
     }
 
     /**
