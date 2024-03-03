@@ -4,6 +4,7 @@ import io.github.ausf_software.smbp_editor.core.storage.Storage;
 import io.github.ausf_software.smbp_editor.core.storage.StorageListener;
 import io.github.ausf_software.smbp_editor.core.tool.AbstractEditorTool;
 import io.github.ausf_software.smbp_editor.core.tool.RenderOverCanvasViewport;
+import io.github.ausf_software.smbp_editor.core.utils.ConfigureToolObjectUtil;
 import io.github.ausf_software.smbp_editor.core.utils.MethodPair;
 import io.github.ausf_software.smbp_editor.core.utils.RenderOverCanvasViewportUtil;
 import io.github.ausf_software.smbp_editor.render.Editor;
@@ -14,12 +15,15 @@ import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.util.Properties;
 import java.util.Set;
 
 public class SystemManager {
 
+    public static final String CFG_PATH = "res/";
     private static final Logger log = LoggerFactory.getLogger(SystemManager.class);
 
     private static final String CLASSES_PATH = "io.github.ausf_software.smbp_editor.tools";
@@ -35,18 +39,31 @@ public class SystemManager {
     private Set<Class<RenderOverCanvasViewport>> renderOver;
     private LoadingWindow loadingWindow = new LoadingWindow();
 
+    private String[] enTools;
+
     public SystemManager(MainWindow mainWindow) {
         this.mainWindow = mainWindow;
+
+        Properties properties = new Properties();
+        try {
+            properties.load(new FileInputStream("smbp.cfg"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        Set<String> en = ConfigureToolObjectUtil.loadArray(properties, "enabledTools");
+        enTools = en.toArray(new String[en.size()]);
 
         storage.upload("current_tool", "null");
         editorToolsManager = new EditorToolsManager(this);
         renderOver = RenderOverCanvasViewportUtil.getRenderOverCanvas(reflections);
-        int count = editorToolsManager.getLoadingItemCount(reflections) + renderOver.size();
+        int count = editorToolsManager.getLoadingItemCount(reflections)
+                        + renderOver.size() + enTools.length;
         log.info("Обнаружено элементов для загрузки: {}", count);
         loadingWindow.setCountLoadingItem(count);
         editorToolsManager.loadToolEntities();
-        for (String name : editorToolsManager.getToolNames()) {
+        for (String name : enTools) {
             editorToolsManager.enableTool(name);
+            loaded();
         }
         // регистрируем рендер поверх холста
         registerRenderOverCanvas(renderOver);
@@ -63,7 +80,7 @@ public class SystemManager {
         editor.registerActionInputMap(editorToolsManager.getActionInputMap());
     }
 
-    void addToolToPanel(ToolEntity entity) throws IOException {
+    void addToolToPanel(ToolEntity entity) {
         toolsPanel.addTool(entity.getIcon(), entity.getToolName());
     }
 

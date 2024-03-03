@@ -37,4 +37,10 @@ public @interface EditorTool {
      * @return строку с путем к иконке инструмента
      */
     String icon() default "";
+
+    /**
+     * Возвращает строку с именем конфигурационного файла
+     * @return строку с именем конфигурационного файла
+     */
+    String cfg() default "";
 }
