@@ -18,6 +18,9 @@ import java.util.Set;
 /**
  * Содержит статические методы, которые позволяют удобно работать с конфигурационными
  * файлами инструментов с высоким уровнем абстракции.
+ * @since 1.0
+ * @version 1.0
+ * @author Daniil Scherbina
  */
 public class ConfigureToolObjectUtil {
     private static final Logger log = LoggerFactory.getLogger(ConfigureToolObjectUtil.class);
@@ -72,13 +75,7 @@ public class ConfigureToolObjectUtil {
                     }
                     setField(toolObject, m, value, f);
                 } else {
-                    Set<String> values = new HashSet<>();
-                    String cur = "";
-                    int i = 0;
-                    while ((cur = properties.getProperty(key +"_" + i)) != null) {
-                        values.add(cur);
-                        i++;
-                    }
+                    Set<String> values = loadArray(properties, key);
                     setStringArrayField(toolObject, m, values.toArray(new String[values.size()]));
                 }
             }
@@ -90,6 +87,23 @@ public class ConfigureToolObjectUtil {
             throw new RuntimeException(e);
         }
         return true;
+    }
+
+    /**
+     * Читает из набора свойств массив заданного имени
+     * @param properties набор свойств
+     * @param key имя массива
+     * @return считанное множество из значений массива
+     */
+    public static Set<String> loadArray(Properties properties, String key) {
+        Set<String> values = new HashSet<>();
+        String cur = "";
+        int i = 0;
+        while ((cur = properties.getProperty(key +"_" + i)) != null) {
+            values.add(cur);
+            i++;
+        }
+        return values;
     }
 
     /**
