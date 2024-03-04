@@ -11,15 +11,19 @@ import io.github.ausf_software.smbp_editor.render.Editor;
 import io.github.ausf_software.smbp_editor.render.LoadingWindow;
 import io.github.ausf_software.smbp_editor.render.MainWindow;
 import io.github.ausf_software.smbp_editor.render.ToolsPanel;
+import io.github.ausf_software.smbp_editor.render.settings.SettingsWindow;
 import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Properties;
 import java.util.Set;
+import java.util.List;
 
 public class SystemManager {
 
@@ -38,11 +42,13 @@ public class SystemManager {
 
     private Set<Class<RenderOverCanvasViewport>> renderOver;
     private LoadingWindow loadingWindow = new LoadingWindow();
+    private SettingsWindow settingsWindow;
 
     private String[] enTools;
 
     public SystemManager(MainWindow mainWindow) {
         this.mainWindow = mainWindow;
+        settingsWindow = new SettingsWindow(this);
 
         Properties properties = new Properties();
         try {
@@ -90,6 +96,18 @@ public class SystemManager {
 
     public void changeTool(String name) {
         storage.upload("current_tool", name);
+    }
+
+    public List<String> getAllToolNames() {
+        return editorToolsManager.getToolNames();
+    }
+
+    public List<String> getEnabledToolNames() {
+        return new ArrayList<>(List.of(enTools));
+    }
+
+    public Set<Field> getConfigureField(String name) {
+        return editorToolsManager.getToolEntity(name).getConfigField();
     }
 
     void registerStorageListeners(AbstractEditorTool tool, ToolEntity entity) {
