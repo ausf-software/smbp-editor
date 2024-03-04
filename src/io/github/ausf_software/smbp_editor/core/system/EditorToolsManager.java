@@ -10,6 +10,7 @@ import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.swing.text.html.parser.Entity;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -73,6 +74,15 @@ class EditorToolsManager {
         tools = EditorToolUtil.getEditorTools(reflections);
         int size = tools.size();
         return size;
+    }
+
+    /**
+     * Возвращает экземпляр свойств инструмента
+     * @param name имя инструмента
+     * @return объект свойств инструмента
+     */
+    public ToolEntity getToolEntity(String name) {
+        return TOOL_ENTITIES.get(name);
     }
 
     /**
